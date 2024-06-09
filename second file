@@ -20,5 +20,3 @@ def parse_books_info(url):
         print("Название:", title) #выводим название и цену 
         print("Цена:", price)
         print()
-url = 'http://books.toscrape.com/catalogue/category/books/classics_6/index.html'
-parse_books_info(url)
