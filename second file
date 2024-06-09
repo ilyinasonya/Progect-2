@@ -1,14 +1,23 @@
+import requests
+from bs4 import BeautifulSoup
 def get_soup(url):
+#функция, которая принимает URL веб-страницы как аргумент и возвращает объект BeautifulSoup, созданный на основе содержимого этой страницы
     response = requests.get(url)
+#внутри функции get_soup мы используем метод get библиотеки requests, чтобы сделать запрос к указанному URL и сохранить ответ (Response) в переменной response
     soup = BeautifulSoup(response.text, 'html.parser')
+#после того, как мы получили ответ от сервера, мы создаем объект BeautifulSoup на основе текстового содержимого этого ответа с использованием парсера html.parser
     return soup
 
 def parse_books_info(url):
+#функция, которая принимает URL страницы с книгами в качестве аргумента и выводит названия книг и их цены.
     soup = get_soup(url)
+#внутри функции parse_books_info мы вызываем функцию get_soup, чтобы получить объект BeautifulSoup для указанной страницы
     books = soup.find_all('article', class_='product_pod')
-    for book in books:
-        title = book.h3.a['title']
-        price = book.find('p', class_='price_color').text
-        print("Название:", title)
+#используем метод find_all объекта BeautifulSoup, чтобы найти все элементы <article> с классом product_pod, которые содержат информацию о книгах на странице
+    for book in books: #запускаем цикл for, чтобы перебрать все найденные книги
+        title = book.h3.a['title'] #находим название книги, извлекая его из элемента <a> (со ссылкой на книгу) внутри заголовка <h3> книги.
+        price = book.find('p', class_='price_color').text #находим цену книги, используя метод find, чтобы найти элемент <p> с классом price_color и получаем текстовое содержимое этого элемента
+        print("Название:", title) #выводим название и цену 
         print("Цена:", price)
         print()
+
